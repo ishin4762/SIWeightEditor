@@ -29,7 +29,10 @@ try:
 except ImportError:
     from PySide.QtGui import *
     from PySide.QtCore import *
-    
+
+import sys
+PYTHON_VER = sys.version_info.major
+
 MAYA_VER = int(cmds.about(v=True)[:4])
 
 if MAYA_VER >= 2016:
@@ -194,7 +197,10 @@ class WeightTransferMultiple(qt.SubWindow):
             if len(self.dup_objs) > 1:
                 cmds.delete(self.dup_objs)
         except Exception as e:
-            e.message
+            if PYTHON_VER >= 3:
+                print(e)
+            else:
+                print(e.message)
         cmds.delete(self.marged_mesh)
             
         cmds.select(self.transfer_mesh+self.transfer_comp, r=True)

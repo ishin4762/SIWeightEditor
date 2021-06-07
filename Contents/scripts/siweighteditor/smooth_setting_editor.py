@@ -14,6 +14,8 @@ except ImportError:
     from PySide.QtGui import *
     from PySide.QtCore import *
     
+import sys
+PYTHON_VER = sys.version_info.major
 
 class Option():
     def __init__(self):
@@ -112,7 +114,10 @@ class SubWindow(qt.SubWindow):
                 with open(self.save_file, 'r') as f:
                     save_data = json.load(f)
             except Exception as e:
-                print(e.message)
+                if PYTHON_VER >= 3:
+                    print(e)
+                else:
+                    print(e.message)    
                 save_data = self.save_default()
         else:
             save_data = self.save_default()

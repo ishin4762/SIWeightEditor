@@ -6,6 +6,9 @@ import maya.api.OpenMayaAnim as oma2
 from maya import cmds
 from . import common
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 class StoreSkinWeight():
     def run_store(self):
         self.dag_skin_id_dict = {}
@@ -233,7 +236,10 @@ class StoreSkinWeight():
                     clusterName = skinFn.name()
                     #print 'get skin :', clusterName, dagIterator.fullPathName()
                 except Exception as e:
-                    print('get skin error in om :',e.message)
+                    if PYTHON_VER >= 3:
+                        print('get skin error in om :', e)
+                    else:
+                        print('get skin error in om :', e.message)
                 if skinFn:#見つかったらすぐ終わり
                     break
                 itDG.next()
@@ -298,7 +304,10 @@ class StoreSkinWeight():
                 #print 'get weight :',meshPath , vertexComp , weights , infCountPtr
                 skinFn.getWeights( meshPath , vertexComp , weights , infCountPtr )
             except Exception as e:
-                print('get skin weight error :', e.message)
+                if PYTHON_VER >= 3:
+                    print('get skin weight error :', e)
+                else:
+                    print('get skin weight error :', e.message)
                 continue
             #print 'check weight data type :', type(weights)
             weights = self.conv_weight_shape(len(infIndices), weights)

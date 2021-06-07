@@ -10,7 +10,9 @@ from . import qt
 import maya.api.OpenMaya as om
 import re
 
-    
+import sys
+PYTHON_VER = sys.version_info.major
+
 def setSoftEdge(mesh, angle=120):
     # 法線のロック解除
     cmds.polyNormalPerVertex(mesh + '.vtx[*]', unFreezeNormal=True)
@@ -100,7 +102,10 @@ class ClusterCopy():
                 print(weights)
             #値が取れないときアンドゥするとなぜか直ることがある
             except Exception as e:
-                print(e.message)
+                if PYTHON_VER >= 3:
+                    print(e)
+                else:
+                    print(e.message)
                 cmds.delete(cls)
                 cmds.undo()
                 set_node = cmds.ls(cmds.listHistory(cls, f=True), type='objectSet', l=True)[0]

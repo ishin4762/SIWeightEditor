@@ -10,6 +10,9 @@ from . import common
 from . import lang
 from . import weight
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 def main(mesh=None, pop_zero_poly=False):
     cmds.selectMode(o=True)
     #pop_zero_poly→ゼロポリゴンメッシュを発見した場合に警告メッセージを出すかどうか
@@ -53,7 +56,10 @@ def main(mesh=None, pop_zero_poly=False):
         try:
             cmds.select(s, add=True)
         except Exception as e:
-            print(e.message)
+            if PYTHON_VER >= 3:
+                print(e)
+            else:
+                print(e.message)
     if zero_mesh and pop_zero_poly:
         msg = msg01.output()+str(len(zero_mesh))
         msg += '\n'+msg02.output()

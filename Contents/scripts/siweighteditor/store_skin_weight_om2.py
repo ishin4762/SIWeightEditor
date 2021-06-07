@@ -40,7 +40,10 @@ class StoreSkinWeight():
                 meshDag, component = iter.getComponent() 
                 #print 'get dag node :', meshDag.fullPathName(), component
             except Exception as e:#2016ではノード出したばかりの状態でシェイプがなぜか帰ってくるのでエラー回避
-                print('get current vtx error :', e.message)
+                if PYTHON_VER >= 3:
+                    print('get current vtx error :', e)
+                else:
+                    print('get current vtx error :', e.message)                
                 iter.next()
                 continue
                 
@@ -93,8 +96,11 @@ class StoreSkinWeight():
                 meshDag = iter.getDagPath()
                 #print 'get dag node :', meshDag.fullPathName()
             except Exception as e:#2016ではノード出したばかりの状態でシェイプがなぜか帰ってくるのでエラー回避
-                #iter.next()
-                print('get dag path error1 :', e.message)
+                #iter.next()                
+                if PYTHON_VER >= 3:
+                    print('get dag path error1 :', e)
+                else:
+                    print('get dag path error1 :', e.message)
                 iter.next()
                 continue
             mesh_path_name = meshDag.fullPathName()
@@ -131,7 +137,10 @@ class StoreSkinWeight():
                 #print 'get dag node :', meshDag.fullPathName(), component
             except Exception as e:#2016ではノード出したばかりの状態でシェイプがなぜか帰ってくるのでエラー回避
                 #iter.next()
-                print('get dag path error2 :', e.message)
+                if PYTHON_VER >= 3:
+                    print('get dag path error2 :', e)
+                else:
+                    print('get dag path error2 :', e.message)                
                 continue
             
             skinFn, vtxArray, skinName = self.adust_to_vertex_list(meshDag, component)
@@ -268,7 +277,10 @@ class StoreSkinWeight():
                 #print 'get weight :',meshPath , vertexComp , weights , infCountPtr
                 weights = skinFn.getWeights( meshPath , vertexComp)
             except Exception as e:
-                print('get skin weight error :', e.message)
+                if PYTHON_VER >= 3:
+                    print('get skin weight error :', e)
+                else:
+                    print('get skin weight error :', e.message)
                 continue
             #print 'check weight data type :', type(weights)
             #print "getWeights :", weights

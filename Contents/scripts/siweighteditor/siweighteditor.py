@@ -100,7 +100,10 @@ def load_plugin():
             cmds.loadPlugin('bake_skin_weight.py', qt=True)
             cmds.pluginInfo('bake_skin_weight.py', e=True, autoload=True)
     except Exception as e:
-        'load plugin error :', e.message
+        if PYTHON_VER >= 3:
+            'load plugin error :', e
+        else:
+            'load plugin error :', e.message
     #ツールチップもついでに有効か
     cmds.help(popupMode=True)
 
@@ -2519,7 +2522,10 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                 except Exception as e:
-                    print('clear lock error :', skin_cluster, e.message)
+                    if PYTHON_VER >= 3:
+                        print('clear lock error :', skin_cluster, e)
+                    else:
+                        print('clear lock error :', skin_cluster, e.message)    
                     pass
             else:
                 cmds.setAttr(skin_cluster+'.'+self.lock_attr_name, 
@@ -2687,7 +2693,10 @@ class WeightEditorWindow(qt.DockWindow):
                     try:
                         cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                     except Exception as e:
-                        print('clear lock error :', skin_cluster, e.message)
+                        if PYTHON_VER >= 3:
+                            print('clear lock error :', skin_cluster, e)
+                        else:
+                            print('clear lock error :', skin_cluster, e.message)
                         pass
                 else:
                     cmds.setAttr(skin_cluster+'.'+self.lock_attr_name, type='stringArray', *([len(new_lock_data_list)] + new_lock_data_list) )
@@ -2716,7 +2725,10 @@ class WeightEditorWindow(qt.DockWindow):
                         lock_data_dict[int(split_lock_data[0])] = lock_inf_str.split(',')
             return lock_data_dict
         except Exception as e:#読み込み失敗したらクリアする
-            print('decode locke data error :', e.message)
+            if PYTHON_VER >= 3:
+               print('decode locke data error :', e)
+            else:
+                print('decode locke data error :', e.message)
             return {}
                 
     #ロック状態のクリア
@@ -2731,7 +2743,10 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                 except Exception as e:
-                    print('clear lock error :', skin_cluster, e.message)
+                    if PYTHON_VER >= 3:
+                        print('clear lock error :', skin_cluster, e)
+                    else:
+                        print('clear lock error :', skin_cluster, e.message)    
                     pass
             
     #コピペ右クリックメニュー
@@ -3239,7 +3254,10 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     self.vtx_lock_data_dict[vtx_name].add(node_influence_id_dict[influence])
                 except Exception as e:
-                    print('lock setting error :', e.message)
+                    if PYTHON_VER >= 3:
+                        print('lock setting error :', e)
+                    else:
+                        print('lock setting error :', e.message)                    
                     pass
                    
         try:#都度メモリをきれいに
@@ -3428,7 +3446,7 @@ class WeightEditorWindow(qt.DockWindow):
             return
         if PYTHON_VER >= 3:
             self.sel_columns = [id for id in range(column_count) if self.sel_model.columnIntersectsSelection(id, selected_item)]
-        else
+        else:
             self.sel_columns = [id for id in xrange(column_count) if self.sel_model.columnIntersectsSelection(id, selected_item)]
         for i, influence in enumerate(self.all_influences):
             try:
@@ -4022,7 +4040,10 @@ class WeightEditorWindow(qt.DockWindow):
             self.om_bake_skin_weight(realbake=True, ignoreundo=self.change_flag)
         except Exception as e:
             try:
-                print('Bake Skin Weight Failure :', e.message)
+                if PYTHON_VER >= 3:
+                    print('Bake Skin Weight Failure :', e)
+                else:
+                    print('Bake Skin Weight Failure :', e.message)                    
                 #プラグインをリロードしてリトライする
                 cmds.loadPlugin('bake_skin_weight.py', qt=True)
                 cmds.pluginInfo('bake_skin_weight.py', e=True, autoload=True)

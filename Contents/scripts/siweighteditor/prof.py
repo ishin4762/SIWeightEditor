@@ -8,6 +8,9 @@ try:
 	import pstats
 except: pass
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 def profileFunction(sortKey="time", rows=30):
 	def _(f):
 		@functools.wraps(_)
@@ -44,7 +47,10 @@ class LapCounter():
             try:
                 window.time_label.setText('- Calculation Time - '+out_put_time+' sec')
             except Exception as e:
-                e.message
+                if PYTHON_VER >= 3:
+                    print(e)
+                else:
+                    print(e.message)
                 pass
             
         if print_flag:#表示するかどうかをグローバル変数で管理

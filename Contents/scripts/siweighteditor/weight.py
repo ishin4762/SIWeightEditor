@@ -7,6 +7,9 @@ import os
 import json
 import re
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 class WeightCopyPaste():
     def main(self, skinMeshes, mode='copy', saveName='default', method='index', weightFile='auto', 
                         threshold=0.2, engine='maya', tgt=1, path='default', viewmsg=False):
@@ -55,7 +58,10 @@ class WeightCopyPaste():
                 if not os.path.exists(self.protect_path):
                     os.makedirs(self.protect_path)
             except Exception as e:
-                print(e.message)
+                if PYTHON_VER >= 3:
+                    print(e)
+                else:
+                    print(e.message)
                 return
             self.filePath = self.protect_pat+os.sep + self.saveName
         self.fileName = os.path.join(self.filePath, self.saveName + '.json')
@@ -109,7 +115,10 @@ class WeightCopyPaste():
                         common.TemporaryReparent().main(skinMesh, dummyParent=dummy, mode='parent')
                         tempSkinNode = skinMesh#親を取得するためスキンクラスタのあるノードを保存しておく
                     except Exception as e:
-                        print(e.message)
+                        if PYTHON_VER >= 3:
+                            print(e)
+                        else:
+                            print(e.message)
                         print('Error !! Skin bind failed : ' + skinMesh)
                         continue
             else:
@@ -380,7 +389,10 @@ def load_joint_label_rules():
                     left_list_list.append(l_list)
                     right_list_list.append(r_list)
             except Exception as e:
-                print(e.message)
+                if PYTHON_VER >= 3:
+                    print(e)
+                else:
+                    print(e.message)
                 left_list_list.append(def_left_list_list[i])
                 right_list_list.append(def_right_list_list[i])
         else:

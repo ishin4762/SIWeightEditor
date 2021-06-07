@@ -14,6 +14,8 @@ except ImportError:
     from PySide.QtGui import *
     from PySide.QtCore import *
     
+import sys
+PYTHON_VER = sys.version_info.major
 
 class Option():
     def __init__(self):
@@ -22,7 +24,10 @@ class Option():
             WINDOW.closeEvent(None)
             WINDOW.close()
         except Exception as e:
-            print(e.message)
+            if PYTHON_VER >= 3:
+                print(e)
+            else:
+                print(e.message)
         WINDOW = SubWindow()
         #WINDOW.init_flag=False
         WINDOW.resize(800, 500)
@@ -166,7 +171,10 @@ class SubWindow(qt.SubWindow):
                         r_list = save_data.values()
                         self.all_lr_list.append([l_list, r_list])
                 except Exception as e:
-                    print(e.message)
+                    if PYTHON_VER >= 3:
+                        print(e)
+                    else:
+                        print(e.message)
                     self.all_lr_list.append(self.def_all_lr_list[i])
             else:
                 self.all_lr_list.append(self.def_all_lr_list[i])
