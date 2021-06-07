@@ -7,6 +7,9 @@ from maya import cmds
 from . import common
 from . import prof
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 class StoreSkinWeight():
     def run_store(self):
         self.dag_skin_id_dict = {}
@@ -251,8 +254,12 @@ class StoreSkinWeight():
             # インフルエンスの数のIntArray
             infDags = skinFn.influenceObjects()#インフルエンスを全取得
             infIndices = om2.MIntArray( len(infDags), 0 )
-            for x in xrange(len(infDags)):
-                infIndices[x] = int(skinFn.indexForInfluenceObject(infDags[x]))
+            if PYTHON_VER >= 3:
+                for x in range(len(infDags)):
+                    infIndices[x] = int(skinFn.indexForInfluenceObject(infDags[x]))
+            else:
+                for x in xrange(len(infDags)):
+                    infIndices[x] = int(skinFn.indexForInfluenceObject(infDags[x]))
             #print 'get influence id list :', infIndices
                 
             # すべてのウエイトの値を取得
@@ -285,7 +292,10 @@ class StoreSkinWeight():
     
     #ウェイトをバーテックス単位の2次元配列にリシェイプする
     def conv_weight_shape(self, shape, weights):
-        return [[weights[i+j*shape] for i in xrange(shape)] for j in xrange(len(weights)/shape)]
+        if PYTHON_VER >= 3:
+            return [[weights[i+j*shape] for i in range(shape)] for j in range(len(weights)//shape)]
+        else:
+            return [[weights[i+j*shape] for i in xrange(shape)] for j in xrange(len(weights)/shape)]
         
     #名前からシェイプを逆引きして返す
     def om_get_shape(self, name):

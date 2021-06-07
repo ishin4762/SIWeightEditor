@@ -3426,7 +3426,10 @@ class WeightEditorWindow(qt.DockWindow):
         selected_item = self.sel_model.currentIndex()
         if not selected_item:
             return
-        self.sel_columns = [id for id in xrange(column_count) if self.sel_model.columnIntersectsSelection(id, selected_item)]
+        if PYTHON_VER >= 3:
+            self.sel_columns = [id for id in range(column_count) if self.sel_model.columnIntersectsSelection(id, selected_item)]
+        else
+            self.sel_columns = [id for id in xrange(column_count) if self.sel_model.columnIntersectsSelection(id, selected_item)]
         for i, influence in enumerate(self.all_influences):
             try:
                 if i in self.sel_columns:
