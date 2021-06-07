@@ -35,8 +35,17 @@ from . import joint_rule_editor
 from . import go
 from . import prof
 from . import smooth_setting_editor
-reload(smooth_setting_editor)
-reload(prof)
+
+import sys
+PYTHON_VER = sys.version_info.major
+
+if PYTHON_VER >= 3:
+    import importlib
+    importlib.reload(smooth_setting_editor)
+    importlib.reload(prof)
+else:
+    reload(smooth_setting_editor)
+    reload(prof)
 
 import imp
 try:
@@ -103,9 +112,9 @@ def timer(func):
         start = time.time()#開始時間
         func(*args, **kwargs)#関数実行
         end = time.time()#終了時間
-        print '-'*50
-        print 'Execution time :', func.__name__, end - start
-        print '-'*50
+        print('-'*50)
+        print('Execution time :', func.__name__, end - start)
+        print('-'*50)
     return wrapper
     
     
@@ -314,11 +323,11 @@ class MyHeaderView(QHeaderView):
         
     #セクションがクリックされた時のスロット
     def clicked_section(self, e):
-        print ' clicked_section', e
+        print(' clicked_section', e)
         
     #セクションが範囲選択された時のスロット
     def section_enter(self, e):
-        print 'section_enter', e
+        print('section_enter', e)
 
     #@prof.profileFunction()
     def paintSection(self, painter, rect, index):
@@ -581,7 +590,7 @@ class TableModel(QAbstractTableModel):
     def setData(self, index, value, role=Qt.EditRole):
         if not isinstance(index, tuple):
             if not index.isValid() or not 0 <= index.row() < len(self._data):
-                print 'can not set data : retrun'
+                print('can not set data : retrun')
                 return
             row = index.row()
             column = index.column()
@@ -730,7 +739,7 @@ class WeightEditorWindow(qt.DockWindow):
             return save_data
             
     def init_save_data(self):
-        print 'data load error , init save data :'
+        print('data load error , init save data :')
         self.area = None
         self.pw = 200
         self.ph = 200
@@ -2204,7 +2213,7 @@ class WeightEditorWindow(qt.DockWindow):
                                             
     def weight_transfer_copy(self):
         msg = WEIGHT_TRANSFER_MULTIPLE.stock_copy_mesh()
-        print msg
+        print(msg)
         self.set_message(msg=msg, error=False)
         
     def weight_transfer_paste(self):
@@ -2510,7 +2519,7 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                 except Exception as e:
-                    print 'clear lock error :', skin_cluster, e.message
+                    print('clear lock error :', skin_cluster, e.message)
                     pass
             else:
                 cmds.setAttr(skin_cluster+'.'+self.lock_attr_name, 
@@ -2678,7 +2687,7 @@ class WeightEditorWindow(qt.DockWindow):
                     try:
                         cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                     except Exception as e:
-                        print 'clear lock error :', skin_cluster, e.message
+                        print('clear lock error :', skin_cluster, e.message)
                         pass
                 else:
                     cmds.setAttr(skin_cluster+'.'+self.lock_attr_name, type='stringArray', *([len(new_lock_data_list)] + new_lock_data_list) )
@@ -2707,7 +2716,7 @@ class WeightEditorWindow(qt.DockWindow):
                         lock_data_dict[int(split_lock_data[0])] = lock_inf_str.split(',')
             return lock_data_dict
         except Exception as e:#読み込み失敗したらクリアする
-            print 'decode locke data error :', e.message
+            print('decode locke data error :', e.message)
             return {}
                 
     #ロック状態のクリア
@@ -2722,7 +2731,7 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     cmds.deleteAttr(skin_cluster+'.'+self.lock_attr_name)
                 except Exception as e:
-                    print 'clear lock error :', skin_cluster, e.message
+                    print('clear lock error :', skin_cluster, e.message)
                     pass
             
     #コピペ右クリックメニュー
@@ -3230,7 +3239,7 @@ class WeightEditorWindow(qt.DockWindow):
                 try:
                     self.vtx_lock_data_dict[vtx_name].add(node_influence_id_dict[influence])
                 except Exception as e:
-                    print 'lock setting error :', e.message
+                    print('lock setting error :', e.message)
                     pass
                    
         try:#都度メモリをきれいに
@@ -3610,7 +3619,7 @@ class WeightEditorWindow(qt.DockWindow):
         '''
         if from_spinbox and not self.key_pressed and not from_input_box:
             #print 'focus error :'
-            print 'from spin and no key and not input box return :'
+            print('from spin and no key and not input box return :')
             self.from_spinbox = False
             return
         '''
@@ -4010,7 +4019,7 @@ class WeightEditorWindow(qt.DockWindow):
             self.om_bake_skin_weight(realbake=True, ignoreundo=self.change_flag)
         except Exception as e:
             try:
-                print 'Bake Skin Weight Failure :', e.message
+                print('Bake Skin Weight Failure :', e.message)
                 #プラグインをリロードしてリトライする
                 cmds.loadPlugin('bake_skin_weight.py', qt=True)
                 cmds.pluginInfo('bake_skin_weight.py', e=True, autoload=True)
@@ -4306,7 +4315,7 @@ def Option(x=None, y=None):
     
 #再起動時の復元
 def restoration_workspacecontrol():
-    print 'SI Weight Editor : restoration_workspacecontrol'
+    print('SI Weight Editor : restoration_workspacecontrol')
     global WINDOW
     WINDOW = make_ui()
     restoredControl = omui.MQtUtil.getCurrentParent()

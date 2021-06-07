@@ -14,11 +14,11 @@ def timer(func):
         start = dt.datetime.today()
         result = func(*args, **kwargs)
         end = dt.datetime.today()
-        print '----------------------------------'
-        print 'end:', end
-        print 'start:', start
-        print 'running:', end - start, func
-        print '-------------------------------------------------------------'
+        print('----------------------------------')
+        print('end:', end)
+        print('start:', start)
+        print('running:', end - start, func)
+        print('-------------------------------------------------------------')
         return result
     return wrapper
     
@@ -43,9 +43,9 @@ class LapCounter():
         self.lap_times += 1
         self.start = dt.datetime.today()
     def lap_print(self):
-        print '----------------------------------'
+        print('----------------------------------')
         for lap_time in self.lap_list:
-            print lap_time
+            print(lap_time)
         
 #指定タイプへのコンポーネント変換をまとめて
 def conv_comp(obj, mode=''):

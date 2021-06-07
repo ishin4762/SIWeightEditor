@@ -97,10 +97,10 @@ class ClusterCopy():
             cmds.select(vertices, r=True)
             try:
                 weights = cmds.percent(cls, q=True, v=True)
-                print weights
+                print(weights)
             #値が取れないときアンドゥするとなぜか直ることがある
             except Exception as e:
-                print e.message
+                print(e.message)
                 cmds.delete(cls)
                 cmds.undo()
                 set_node = cmds.ls(cmds.listHistory(cls, f=True), type='objectSet', l=True)[0]
@@ -120,7 +120,7 @@ class ClusterCopy():
             return
         for cls in self.cluster_list:
             weights = self.cls_weight_dict[cls]
-            print 'paste cls :',cls
+            print('paste cls :',cls)
             cmds.select(cl=True)            
             points = self.point_dict[cls]
             newcls = cmds.cluster(points, n=cls)

@@ -28,7 +28,7 @@ class StoreSkinWeight():
         while not iter.isDone():
             loop += 1
             if loop >= 10000:
-                print 'too many loop :'
+                print('too many loop :')
                 return []
                 
             meshDag = om.MDagPath()
@@ -80,7 +80,7 @@ class StoreSkinWeight():
         while not iter.isDone():
             loop += 1
             if loop >= 10000:
-                print 'too many loop :'
+                print('too many loop :')
                 return []
             meshDag = om.MDagPath()
             component = om.MObject()
@@ -126,7 +126,7 @@ class StoreSkinWeight():
                 #print 'get dag node :', meshDag.fullPathName()
             except Exception as e:#2016ではノード出したばかりの状態でシェイプがなぜか帰ってくるのでエラー回避
                 #iter.next()
-                print 'get dag path error :'
+                print('get dag path error :')
                 continue
             
             skinFn, vtxArray, skinName = self.adust_to_vertex_list(meshDag, component)
@@ -233,7 +233,7 @@ class StoreSkinWeight():
                     clusterName = skinFn.name()
                     #print 'get skin :', clusterName, dagIterator.fullPathName()
                 except Exception as e:
-                    print 'get skin error in om :',e.message
+                    print('get skin error in om :',e.message)
                 if skinFn:#見つかったらすぐ終わり
                     break
                 itDG.next()
@@ -298,7 +298,7 @@ class StoreSkinWeight():
                 #print 'get weight :',meshPath , vertexComp , weights , infCountPtr
                 skinFn.getWeights( meshPath , vertexComp , weights , infCountPtr )
             except Exception as e:
-                print 'get skin weight error :', e.message
+                print('get skin weight error :', e.message)
                 continue
             #print 'check weight data type :', type(weights)
             weights = self.conv_weight_shape(len(infIndices), weights)

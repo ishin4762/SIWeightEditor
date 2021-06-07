@@ -20,15 +20,24 @@ except ImportError:
 MAYA_VER = int(cmds.about(v=True)[:4])
 MAYA_API_VER = int(cmds.about(api=True))
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 try:
-    MAYA_WIDNOW = shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
+    if PYTHON_VER >= 3:
+        MAYA_WIDNOW = shiboken.wrapInstance(int(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
+    else:
+        MAYA_WIDNOW = shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
 except:
     MAYA_WIDNOW = None
     
 #MayaWindow単独取得関数
 def get_maya_window():
     try:
-        return shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
+        if PYTHON_VER >= 2022:
+            return shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
+        else:
+            return shiboken.wrapInstance(int(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
     except:
         return None
             

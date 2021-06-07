@@ -112,7 +112,7 @@ class SubWindow(qt.SubWindow):
                 with open(self.save_file, 'r') as f:
                     save_data = json.load(f)
             except Exception as e:
-                print e.message
+                print(e.message)
                 save_data = self.save_default()
         else:
             save_data = self.save_default()

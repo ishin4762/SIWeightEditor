@@ -6,9 +6,13 @@ import maya.utils
 from . import siweighteditor
 from . import qt
 
+import sys
+PYTHON_VER = sys.version_info.major
+
 def menu_setup():
     #Maya_Windowが見つからない場合はスタートしない
     if not qt.get_maya_window():
+        print("Maya_Window not found.")
         return
         
     cmd = '''
@@ -69,19 +73,28 @@ def register_runtime_command(opt):
         mel.eval(name_cmd.format(**opt))
 
     except Exception as e:
-        print opt['cmd_name']
-        print opt['command']
+        print(opt['cmd_name'])
+        print(opt['command'])
         raise e
 
 
 def register_siwieighteditor_runtime_command():
-    opts = {
-        'annotation':      "Open SiWeightEditor",
-        'category':        "SiWeightEditor",
-        'commandLanguage': "python",
-        'command':         r'''"from siweighteditor import siweighteditor\r\rreload(siweighteditor)\r\siweighteditor.Option() "''',
-        'cmd_name':        "OpenSiWeightEditor"
-    }
+    if PYTHON_VER >= 3:
+        opts = {
+            'annotation':      "Open SiWeightEditor",
+            'category':        "SiWeightEditor",
+            'commandLanguage': "python",
+            'command':         r'''"from siweighteditor import siweighteditor\rimport importlib\r\rimportlib.reload(siweighteditor)\r\siweighteditor.Option() "''',
+            'cmd_name':        "OpenSiWeightEditor"
+        }
+    else:
+        opts = {
+            'annotation':      "Open SiWeightEditor",
+            'category':        "SiWeightEditor",
+            'commandLanguage': "python",
+            'command':         r'''"from siweighteditor import siweighteditor\r\rreload(siweighteditor)\r\siweighteditor.Option() "''',
+            'cmd_name':        "OpenSiWeightEditor"
+        }
     register_runtime_command(opts)
 
 
