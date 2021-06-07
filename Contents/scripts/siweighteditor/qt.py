@@ -34,10 +34,10 @@ except:
 #MayaWindow単独取得関数
 def get_maya_window():
     try:
-        if PYTHON_VER >= 2022:
-            return shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
-        else:
+        if PYTHON_VER >= 3:
             return shiboken.wrapInstance(int(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
+        else:
+            return shiboken.wrapInstance(long(OpenMayaUI.MQtUtil.mainWindow()), QWidget)
     except:
         return None
             
